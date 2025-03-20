@@ -45,9 +45,48 @@ DRIVE_UNIT_CHOICES = (
 )
 
 
+
 class Car(models.Model):
-    pass  # реализуйте модель
+    model = models.CharField(max_length=100)
+    year = models.IntegerField()
+    color = models.CharField(max_length=50)
+    mileage = models.IntegerField()
+    volume = models.FloatField()
+    body_type = models.CharField(max_length=20, choices=BODY_TYPE_CHOICES)
+    drive_unit = models.CharField(max_length=20, choices=DRIVE_UNIT_CHOICES)
+    gearbox = models.CharField(max_length=20, choices=GEARBOX_CHOICES)
+    fuel_type = models.CharField(max_length=20, choices=FUEL_TYPE_CHOICES)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    image = models.ImageField(upload_to='cars/')
+
+    def __str__(self):
+        return self.model
+
+
+
+
+# id - первичный ключ;
+# model - модель авто;
+# year - год выпуска;
+# color - цвет;
+# mileage - пробег;
+# volume - объём двигателя;
+# body_type - тип кузова, варианты возможных значений взять из BODY_TYPE_CHOICES;
+# drive_unit - привод, варианты возможных значений взять из DRIVE_UNIT_CHOICES;
+# gearbox - коробка передач, варианты возможных значений взять из GEARBOX_CHOICES;
+# fuel_type - тип топлива, варианты возможных значений взять из FUEL_TYPE_CHOICES;
+# price - цена;
+# image - изображение авто, сами картинки можно взять в папке images.
+
+
+
 
 
 class Sale(models.Model):
-    pass  # реализуйте модель
+    client = models.ForeignKey('Client', on_delete=models.CASCADE)
+    car = models.ForeignKey('Car', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Продажа {self.car} клиенту {self.client}"
+
